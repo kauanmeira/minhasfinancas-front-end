@@ -1,11 +1,12 @@
-import { render } from "@testing-library/react";
 import React from "react";
+import 'toastr/build/toastr.min.js'
+
 import 'bootswatch/dist/flatly/bootstrap.css'
-import Login from '../views/login'
-import CadastroUsuario from '../views/cadastroUsuario'
 import Rotas from "./rotas";
 import '../custom.css'
 import Navbar from '../components/navbar'
+import 'toastr/build/toastr.css'
+
 
 class App extends React.Component {
     render() {

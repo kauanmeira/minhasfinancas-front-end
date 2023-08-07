@@ -1,38 +1,38 @@
 import React, { useState } from "react";
-import '../components/card';
 import Card from "../components/card";
-import '../components/form-group';
 import FormGroup from "../components/form-group";
 import { useNavigate } from 'react-router-dom';
-import axios from "axios";
+import UsuarioService from "../app/services/usuarioService";
+import LocalStorageService from "../app/services/localStorageService";
+import { mensagemErro } from '../components/toastr'
 
 function Login() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
-    const [mensagemErro, setMensagemErro] = useState(null);
     const navigate = useNavigate();
+    const service = new UsuarioService();
 
-    const entrar = async () => {
-        try {
-            const response = await axios.post('http://localhost:8080/api/usuarios/autenticar', {
-                email: email,
-                senha: senha
-            });
-
+    const entrar = () => {
+        service.autenticar({
+            email: email,
+            senha: senha
+        }).then(response => {
+            console.log(response);
             if (response && response.data) {
+                LocalStorageService.addItem('_usuario_logado', response.data);
                 navigate('/home');
             } else {
                 console.error('Resposta inválida da API:', response);
-                setMensagemErro('Resposta inválida da API');
+                mensagemErro('Resposta inválida da API');
             }
-        } catch (erro) {
+        }).catch(erro => {
             if (erro.response && erro.response.data) {
-                setMensagemErro(erro.response.data);
+                mensagemErro(erro.response.data);
             } else {
                 console.error('Erro desconhecido:', erro);
-                setMensagemErro('Ocorreu um erro desconhecido');
+                mensagemErro('Ocorreu um erro desconhecido');
             }
-        }
+        });
     }
 
     const prepareCadastrar = () => {
@@ -46,7 +46,7 @@ function Login() {
                     <Card title="Login">
                         <div className="row">
                             <div className="row">
-                                <span>{mensagemErro}</span>
+                                {/* Não é necessário exibir a mensagem de erro aqui */}
                             </div>
                             <div className="col-lg-12">
                                 <div className="bs-component">
