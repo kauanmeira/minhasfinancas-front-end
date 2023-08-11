@@ -30,6 +30,16 @@ class LancamentoService extends ApiService {
             { label: 'Receita', value: 'RECEITA' }
         ]
     }
+    obterPorId(id){
+        return this.get(`/${id}`)
+    }
+    atualizar(lancamento) {
+        return this.put(`/${lancamento.id}`, lancamento);
+    }
+
+    salvar(lancamento) {
+        return this.post('', lancamento);
+    }
 
     consultar(lancamentoFiltro) {
         let params = `?ano=${lancamentoFiltro.ano}`
@@ -50,6 +60,9 @@ class LancamentoService extends ApiService {
         }
 
         return this.get(params)
+    }
+    deletar(id) {
+        return this.delete(`/${id}`)
     }
 }
 export default LancamentoService

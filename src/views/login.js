@@ -4,7 +4,7 @@ import FormGroup from "../components/form-group";
 import { useNavigate } from 'react-router-dom';
 import UsuarioService from "../app/services/usuarioService";
 import LocalStorageService from "../app/services/localStorageService";
-import { mensagemErro } from '../components/toastr'
+import { mensagemErro, mensagemSucesso } from '../components/toastr'
 
 function Login() {
     const [email, setEmail] = useState('');
@@ -19,6 +19,7 @@ function Login() {
         }).then(response => {
             console.log(response);
             if (response && response.data) {
+                mensagemSucesso('Usuário Logado com Sucesso!')
                 LocalStorageService.addItem('_usuario_logado', response.data);
                 navigate('/home');
             } else {
