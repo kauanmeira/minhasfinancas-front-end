@@ -55,6 +55,24 @@ function ConsultaLancamentos() {
         navigate(`/cadastro-lancamentos/${id}`); 
     };
 
+    const alterarStatus = (lancamento, status) => {
+        service.alterarStatus(lancamento.id, status)
+            .then(response => {
+                const lancamentosCopy = [...state.lancamentos]; // Cria uma cópia do array de lancamentos
+                const index = lancamentosCopy.findIndex(item => item.id === lancamento.id); // Encontra o índice do objeto pelo id
+                if (index !== -1) {
+                    lancamentosCopy[index].status = status; // Atualiza o status do objeto no array de cópia
+                    setState({ ...state, lancamentos: lancamentosCopy }); // Atualiza o estado com o array modificado
+                }
+                messages.mensagemSucesso('Status atualizado com sucesso!');
+            })
+            .catch(error => {
+                messages.mensagemErro('Ocorreu um erro ao atualizar o status.');
+            });
+    }
+    
+    
+
     const abrirConfirmacao = (lancamento) => {
         setState({ ...state, showConfirmDialog: true, lancamentoDeletar: lancamento });
     };
@@ -153,7 +171,12 @@ function ConsultaLancamentos() {
             <div className="row">
                 <div className="col-md-12">
                     <div className="bs-component">
-                        <LancamentosTable lancamentos={state.lancamentos} deleteAction={abrirConfirmacao} editAction={editar} />
+                        <LancamentosTable 
+                        lancamentos={state.lancamentos} 
+                        deleteAction={abrirConfirmacao} 
+                        editAction={editar}
+                        alterarStatus= {alterarStatus}
+                        />
                     </div>
                 </div>
             </div>

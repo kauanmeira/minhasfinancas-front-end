@@ -6,6 +6,7 @@ import SelectMenu from '../../components/selectMenu';
 import LancamentoService from '../../app/services/lancamentoService';
 import * as messages from '../../components/toastr';
 import LocalStorageService from '../../app/services/localStorageService';
+import ErroValidacao from '../../app/exceptions/erroValidacao';
 
 function CadastroLancamentos() {
     const navigate = useNavigate();
@@ -53,6 +54,7 @@ function CadastroLancamentos() {
 
 
     const submit = () => {
+
         const usuarioLogado = LocalStorageService.obterItem('_usuario_logado');
 
         const { descricao, valor, mes, ano, tipo } = state;
@@ -65,6 +67,15 @@ function CadastroLancamentos() {
             tipo,
             usuario: usuarioLogado.id,
         };
+        try {
+            service.validar(lancamento)
+        } catch (erro) {
+            const mensagens = erro.mensagens; 
+            mensagens.forEach(msg => messages.mensagemErro(msg));
+            return false;
+        }
+
+
 
         service
             .salvar(lancamento)
