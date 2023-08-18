@@ -84,6 +84,9 @@ class LancamentoService extends ApiService {
         if (!lancamento.valor) {
             erros.push("Informe o Valor.")
         }
+        if (lancamento.valor.length > 7) {
+            erros.push('Valor máximo por lançamento é de R$ 1.000.000,00');
+        }
         if (!lancamento.tipo) {
             erros.push("Informe o Tipo.")
         }

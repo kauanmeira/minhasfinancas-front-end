@@ -69,8 +69,8 @@ function Login() {
                                                 id="exampleInputPassword1"
                                                 placeholder="Password" />
                                         </FormGroup>
-                                        <button onClick={entrar} className="btn btn-success">Entrar</button>
-                                        <button onClick={prepareCadastrar} className="btn btn-danger">Cadastrar</button>
+                                        <button onClick={entrar} className="btn btn-success"><i className="pi pi-sign-in"></i> Entrar</button>
+                                        <button onClick={prepareCadastrar} className="btn btn-danger"><i className="pi pi-plus"></i> Cadastrar</button>
                                     </fieldset>
                                 </div>
                             </div>

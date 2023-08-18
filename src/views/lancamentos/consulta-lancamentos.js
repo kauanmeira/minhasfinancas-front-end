@@ -44,6 +44,10 @@ function ConsultaLancamentos() {
         service
             .consultar(lancamentoFiltro)
             .then((resposta) => {
+                const lista = resposta.data;
+                if (lista.length < 1) {
+                    messages.mensagemAlerta("Nenhum resultado encontrado");
+                }
                 setState({ ...state, lancamentos: resposta.data });
             })
             .catch((error) => {
@@ -52,7 +56,7 @@ function ConsultaLancamentos() {
     };
 
     const editar = (id) => {
-        navigate(`/cadastro-lancamentos/${id}`); 
+        navigate(`/cadastro-lancamentos/${id}`);
     };
 
     const alterarStatus = (lancamento, status) => {
@@ -70,8 +74,8 @@ function ConsultaLancamentos() {
                 messages.mensagemErro('Ocorreu um erro ao atualizar o status.');
             });
     }
-    
-    
+
+
 
     const abrirConfirmacao = (lancamento) => {
         setState({ ...state, showConfirmDialog: true, lancamentoDeletar: lancamento });
@@ -97,7 +101,7 @@ function ConsultaLancamentos() {
     };
 
     const preparaFormularioCadastro = () => {
-        navigate('/cadastro-lancamentos'); 
+        navigate('/cadastro-lancamentos');
     };
 
     const meses = service.obterListaMeses();
@@ -159,10 +163,10 @@ function ConsultaLancamentos() {
                         <br />
 
                         <button onClick={buscar} type="button" className="btn btn-success">
-                            Buscar
+                            <i className="pi pi-search"></i> Buscar
                         </button>
                         <button onClick={preparaFormularioCadastro} type="button" className="btn btn-danger">
-                            Cadastrar
+                            <i className="pi pi-plus"></i> Cadastrar
                         </button>
                     </div>
                 </div>
@@ -171,11 +175,11 @@ function ConsultaLancamentos() {
             <div className="row">
                 <div className="col-md-12">
                     <div className="bs-component">
-                        <LancamentosTable 
-                        lancamentos={state.lancamentos} 
-                        deleteAction={abrirConfirmacao} 
-                        editAction={editar}
-                        alterarStatus= {alterarStatus}
+                        <LancamentosTable
+                            lancamentos={state.lancamentos}
+                            deleteAction={abrirConfirmacao}
+                            editAction={editar}
+                            alterarStatus={alterarStatus}
                         />
                     </div>
                 </div>

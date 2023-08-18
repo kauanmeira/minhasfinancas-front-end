@@ -207,19 +207,19 @@ function CadastroLancamentos() {
                     {state.atualizando ?
                         (
                             <button onClick={atualizar} type="button" className="btn btn-success">
-                                Atualizar
+                                <i className="pi pi-refresh"></i> Atualizar
                             </button>
                         ) :
                         (
                             <button onClick={submit} type="button" className="btn btn-success">
-                                Salvar
+                               <i className="pi pi-save"></i> Salvar
                             </button>
                         )
                     }
 
 
                     <button onClick={e => navigate('/consulta-lancamentos')} type="button" className="btn btn-danger">
-                        Cancelar
+                    <i className="pi pi-times"></i> Cancelar
                     </button>
                 </div>
             </div>
