@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Card from "../components/card";
 import FormGroup from "../components/form-group";
 import { useNavigate } from 'react-router-dom';
 import UsuarioService from "../app/services/usuarioService";
-import LocalStorageService from "../app/services/localStorageService";
-import { mensagemErro, mensagemSucesso } from '../components/toastr'
+import { mensagemErro, mensagemSucesso } from '../components/toastr';
+import { AuthContext } from "../main/provedorAutenticacao";
 
 function Login() {
     const [email, setEmail] = useState('');
     const [senha, setSenha] = useState('');
     const navigate = useNavigate();
     const service = new UsuarioService();
+    const authContext = useContext(AuthContext);
 
     const entrar = () => {
         service.autenticar({
@@ -20,7 +21,7 @@ function Login() {
             console.log(response);
             if (response && response.data) {
                 mensagemSucesso('Usuário Logado com Sucesso!')
-                LocalStorageService.addItem('_usuario_logado', response.data);
+                authContext.iniciarSessao(response.data);
                 navigate('/home');
             } else {
                 console.error('Resposta inválida da API:', response);
@@ -69,6 +70,7 @@ function Login() {
                                                 id="exampleInputPassword1"
                                                 placeholder="Password" />
                                         </FormGroup>
+                                        <br />
                                         <button onClick={entrar} className="btn btn-success"><i className="pi pi-sign-in"></i> Entrar</button>
                                         <button onClick={prepareCadastrar} className="btn btn-danger"><i className="pi pi-plus"></i> Cadastrar</button>
                                     </fieldset>

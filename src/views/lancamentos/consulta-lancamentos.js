@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Dialog } from 'primereact/dialog';
 import { Button } from 'primereact/button';
-import { useNavigate } from 'react-router-dom'; // Import the hook
+import { useNavigate } from 'react-router-dom';
+import { AuthContext } from '../../main/provedorAutenticacao';
 
 import Card from '../../components/card';
 import FormGroup from '../../components/form-group';
@@ -12,8 +13,9 @@ import LocalStorageService from '../../app/services/localStorageService';
 import * as messages from '../../components/toastr';
 
 function ConsultaLancamentos() {
-    const navigate = useNavigate(); // Get the navigate function from the hook
+    const navigate = useNavigate();
     const service = new LancamentoService();
+    const authContext = useContext(AuthContext);
 
     const [state, setState] = useState({
         ano: '',
@@ -24,6 +26,14 @@ function ConsultaLancamentos() {
         lancamentoDeletar: {},
         lancamentos: [],
     });
+
+    useEffect(() => {
+        if (!authContext.isAutenticado) {
+            navigate('/login');
+        } else {
+            buscar();
+        }
+    }, [authContext.isAutenticado, navigate]);
 
     const buscar = () => {
         if (!state.ano) {
@@ -74,8 +84,6 @@ function ConsultaLancamentos() {
                 messages.mensagemErro('Ocorreu um erro ao atualizar o status.');
             });
     }
-
-
 
     const abrirConfirmacao = (lancamento) => {
         setState({ ...state, showConfirmDialog: true, lancamentoDeletar: lancamento });
